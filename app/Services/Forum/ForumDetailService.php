@@ -34,14 +34,17 @@ class ForumDetailService
                 ->where('vote_type', 'down_vote')
                 ->get()->unique('user_id');
 
+            $commentCount = $forum->comments()->count();
+
             return response()->json([
                 'status' => true,
                 'forum' => $forum,
-                'total_vote' => $voteCount,
-                'up_vote_count' => $upVoteCount,
-                'down_vote_count' => $downVoteCount,
-                'up_voted_by' => $upVotedBy,
-                'down_voted_by' => $downVotedBy,
+                'total_forum_vote' => $voteCount,
+                'total_comment_vote' => $commentCount,
+                'forum_up_vote_count' => $upVoteCount,
+                'forum_down_vote_count' => $downVoteCount,
+                'forum_up_voted_by' => $upVotedBy,
+                'forum_down_voted_by' => $downVotedBy,
             ]);
         } catch (\Throwable $th) {
             Log::error('ErrorFrom::ForumDetailService::singlePost()', [$th->getMessage(), $th->getTraceAsString()]);
