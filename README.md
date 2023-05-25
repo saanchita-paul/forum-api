@@ -53,6 +53,11 @@ DB_PASSWORD=your_database_password
 php artisan migrate
 ```
 
+- Run the following command to seed the database:
+
+```
+php artisan db:seed
+```
 
 - Start the development server:
 
