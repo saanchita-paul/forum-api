@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ForumController;
+use App\Http\Controllers\Api\CommentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,7 +32,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
      */
     Route::get('/auth/user', [AuthController::class,'getUser']);
 
-
+    Route::put('/comments/{commentId}', [CommentController::class, 'editComment']);
+    Route::delete('/comments/{commentId}', [CommentController::class, 'deleteComment']);
 });
 /**
  * user register
@@ -73,3 +75,6 @@ Route::post('/forums/{forumID}/comment', [ForumController::class, 'addComment'])
  * vote a comment
  */
 Route::post('/comments/{commentID}/vote', [ForumController::class, 'voteComment']);
+
+
+
