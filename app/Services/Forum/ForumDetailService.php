@@ -34,6 +34,7 @@ class ForumDetailService
                 ->where('vote_type', 'down_vote')
                 ->get()->unique('user_id');
 
+            $commentedBy = $forum->comments()->with('user')->latest()->get();
             $commentCount = $forum->comments()->count();
 
             return response()->json([
@@ -45,6 +46,7 @@ class ForumDetailService
                 'forum_down_vote_count' => $downVoteCount,
                 'forum_up_voted_by' => $upVotedBy,
                 'forum_down_voted_by' => $downVotedBy,
+                'forum_commented_by' => $commentedBy,
             ]);
         } catch (\Throwable $th) {
             Log::error('ErrorFrom::ForumDetailService::singlePost()', [$th->getMessage(), $th->getTraceAsString()]);

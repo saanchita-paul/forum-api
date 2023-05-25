@@ -22,10 +22,23 @@ class VoteCommentService
     {
         try {
             $comment = Comment::findOrFail($commentId);
+            $userId = $request->user_id;
+            $voteType = $request->vote_type;
 
-            $vote = new Vote();
-            $vote->user_id = $request->user_id;
-            $comment->votes()->save($vote);
+            $existingVote = $comment->votes()->where('user_id', $userId)->first();
+
+            if ($existingVote) {
+                // User has already voted, so update the existing vote
+                $existingVote->vote_type = $voteType;
+                $existingVote->save();
+                $vote = $existingVote;
+            } else {
+                // User hasn't voted, so create a new vote
+                $vote = new Vote();
+                $vote->user_id = $userId;
+                $vote->vote_type = $voteType;
+                $comment->votes()->save($vote);
+            }
 
             return response()->json([
                 'status' => true,

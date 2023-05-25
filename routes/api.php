@@ -34,6 +34,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::put('/comments/{commentId}', [CommentController::class, 'editComment']);
     Route::delete('/comments/{commentId}', [CommentController::class, 'deleteComment']);
+    /**
+     * forum create api with single image support
+     */
+    Route::post('/forums', [ForumController::class, 'createForum']);
+
+    /**
+     * forum details with comments, upvote count of each forum and voted by
+     */
+    Route::get('/forums/{forumID}', [ForumController::class, 'forumDetails']);
 });
 /**
  * user register
@@ -47,18 +56,12 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
 
 
-/**
- * forum create api with single image support
- */
-Route::post('/forums', [ForumController::class, 'createForum']);
+
 /**
  * forum list with image, pagination, search and count
  */
 Route::get('/forums', [ForumController::class, 'forumList']);
-/**
- * forum details with comments, upvote count of each forum and voted by
- */
-Route::get('/forums/{forumID}', [ForumController::class, 'forumDetails']);
+
 /**
  * comments list with pagination of the forum
  */
