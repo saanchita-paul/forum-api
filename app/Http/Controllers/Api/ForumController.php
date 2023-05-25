@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\LikeEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ForumRequest;
 use App\Services\Forum\AddCommentService;
@@ -33,6 +34,7 @@ class ForumController extends Controller
             } else {
                 return 'Forum not created';
             }
+            broadcast(new LikeEvent($reply->id, 1))->toOthers();
         }
         catch (\Throwable $th) {
             Log::error('An error occurred: ',[$th->getMessage()]);
